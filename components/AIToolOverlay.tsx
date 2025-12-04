@@ -30,7 +30,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
     const [loading, setLoading] = useState(false);
-    const [messages, setMessages] = useState<ChatMessage[]>([{ role: 'model', text: '¡Hola! Soy Chatito, tu asistente pedagógico de CREA. Conozco el calendario académico y las herramientas disponibles. ¿En qué te ayudo?' }]);
+    const [messages, setMessages] = useState<ChatMessage[]>([{ role: 'model', text: '¡Hola, colega! Soy Chatito. Como diría Paulo Freire: "Enseñar no es transferir conocimiento, sino crear las posibilidades para su propia producción o construcción". Estoy aquí para dialogar y construir juntos. ¿En qué puedo acompañarte hoy?' }]);
 
     // Quiz State
     const [quizFormat, setQuizFormat] = useState('Multiple Choice');
@@ -59,12 +59,16 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
         setLoading(true);
 
         const appContext = getAppContextString();
-        const context = `Eres "Chatito", un asistente pedagógico experto para docentes de la UNPilar.
+        const context = `Eres "Chatito", un asistente pedagógico inspirado en la filosofía de Paulo Freire.
         
         INFORMACIÓN CONTEXTUAL IMPORTANTE:
         ${appContext}
         
-        Usa esta información para responder preguntas sobre fechas, exámenes y herramientas. Sé amable, proactivo y didáctico.`;
+        Tu rol es acompañar a los docentes de la UNPilar.
+        Adopta un tono cálido, dialógico, crítico y reflexivo. Usa frases pedagógicas inspiradoras.
+        Fomenta la curiosidad y la construcción colectiva del conocimiento.
+        No des solo respuestas cerradas, invita a la reflexión y al diálogo.
+        Sé amable, proactivo y didáctico.`;
 
         const fullPrompt = `${context}\n\nHistorial:\n${messages.map(m => `${m.role}: ${m.text}`).join('\n')}\nUser: ${userMsg}\nModel:`;
 
@@ -209,8 +213,8 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                     {messages.map((msg, idx) => (
                                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                             <div className={`max-w-[85%] rounded-2xl px-5 py-3.5 shadow-sm text-sm leading-relaxed ${msg.role === 'user'
-                                                    ? 'bg-indigo-600 text-white rounded-br-none'
-                                                    : 'bg-white border border-gray-100 text-gray-700 rounded-bl-none'
+                                                ? 'bg-indigo-600 text-white rounded-br-none'
+                                                : 'bg-white border border-gray-100 text-gray-700 rounded-bl-none'
                                                 }`}>
                                                 {msg.text.split('\n').map((line, i) => <p key={i} className="min-h-[1rem]">{line}</p>)}
                                             </div>

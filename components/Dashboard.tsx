@@ -10,6 +10,7 @@ import TutorialsWidget from './TutorialsWidget';
 import AIToolOverlay from './AIToolOverlay';
 import TutorialOverlay from './TutorialOverlay';
 import icon01 from '../assets/icon01.png';
+import uniLogo from '../assets/uni.png';
 
 interface DashboardProps {
     user: User;
@@ -45,6 +46,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                                 <Menu className="w-6 h-6" />
                             </button>
                             <div className="flex items-center gap-2">
+                                <img src={uniLogo} alt="Logo Universidad" className="h-10 w-auto object-contain" />
                                 <div className="bg-indigo-600 p-1.5 rounded-lg">
                                     <BookOpen className="w-6 h-6 text-white" />
                                 </div>
