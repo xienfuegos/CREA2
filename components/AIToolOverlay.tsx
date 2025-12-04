@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  MessageSquare, Sparkles, Palette, ClipboardList, 
-  FileQuestion, Rocket, HeartHandshake, Wand2, X, 
-  Send, Loader2, Eye, EyeOff, Copy, PenTool, Settings, GraduationCap
+import {
+    MessageSquare, Sparkles, Palette, ClipboardList,
+    FileQuestion, Rocket, HeartHandshake, Wand2, X,
+    Send, Loader2, Eye, EyeOff, Copy, PenTool, Settings, GraduationCap
 } from 'lucide-react';
 import { AIToolType, ChatMessage } from '../types';
 import { generateAIContent } from '../services/geminiService';
 import { academicEvents2025, RECURSOS_DATA } from '../constants';
+import icon01 from '../assets/icon01.png';
 
 interface AIToolOverlayProps {
     tool: AIToolType;
@@ -30,18 +31,18 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
     const [output, setOutput] = useState('');
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState<ChatMessage[]>([{ role: 'model', text: '¡Hola! Soy Chatito, tu asistente pedagógico de CREA. Conozco el calendario académico y las herramientas disponibles. ¿En qué te ayudo?' }]);
-    
+
     // Quiz State
     const [quizFormat, setQuizFormat] = useState('Multiple Choice');
     const [quizDifficulty, setQuizDifficulty] = useState('Intermedio');
     const [includeRubric, setIncludeRubric] = useState(false);
-    
+
     // Stylizer State
     const [tone, setTone] = useState('Formal Institucional');
-    
+
     // View State
     const [isPreviewMode, setIsPreviewMode] = useState(false);
-    
+
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -64,7 +65,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
         ${appContext}
         
         Usa esta información para responder preguntas sobre fechas, exámenes y herramientas. Sé amable, proactivo y didáctico.`;
-        
+
         const fullPrompt = `${context}\n\nHistorial:\n${messages.map(m => `${m.role}: ${m.text}`).join('\n')}\nUser: ${userMsg}\nModel:`;
 
         const response = await generateAIContent(fullPrompt);
@@ -75,8 +76,8 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
     const handleContentGeneration = async (type: AIToolType) => {
         if (!input.trim() || loading) return;
         setLoading(true);
-        setIsPreviewMode(false); 
-        
+        setIsPreviewMode(false);
+
         let prompt = '';
 
         switch (type) {
@@ -143,7 +144,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                 Sé práctico, empático y directo. Usa formato Markdown.`;
                 break;
         }
-        
+
         const response = await generateAIContent(prompt);
         setOutput(response);
         setLoading(false);
@@ -155,7 +156,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
 
     const getToolIcon = () => {
         switch (tool) {
-            case 'chat': return <MessageSquare className="w-6 h-6" />;
+            case 'chat': return <img src={icon01} alt="Chatito" className="w-6 h-6 object-contain" />;
             case 'enricher': return <Sparkles className="w-6 h-6" />;
             case 'stylizer': return <Palette className="w-6 h-6" />;
             case 'planner': return <ClipboardList className="w-6 h-6" />;
@@ -198,20 +199,19 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
 
                 {/* Body */}
                 <div className="flex-1 overflow-hidden flex flex-col md:flex-row bg-gray-50">
-                    
+
                     {/* Left: Input / Configuration Area */}
                     <div className={`flex-1 flex flex-col p-6 ${tool === 'chat' ? 'w-full' : 'md:w-5/12 md:border-r border-gray-200'} overflow-hidden bg-white md:bg-gray-50`}>
-                        
+
                         {tool === 'chat' ? (
                             <>
                                 <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2 custom-scrollbar" ref={scrollRef}>
                                     {messages.map((msg, idx) => (
                                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                            <div className={`max-w-[85%] rounded-2xl px-5 py-3.5 shadow-sm text-sm leading-relaxed ${
-                                                msg.role === 'user' 
-                                                ? 'bg-indigo-600 text-white rounded-br-none' 
-                                                : 'bg-white border border-gray-100 text-gray-700 rounded-bl-none'
-                                            }`}>
+                                            <div className={`max-w-[85%] rounded-2xl px-5 py-3.5 shadow-sm text-sm leading-relaxed ${msg.role === 'user'
+                                                    ? 'bg-indigo-600 text-white rounded-br-none'
+                                                    : 'bg-white border border-gray-100 text-gray-700 rounded-bl-none'
+                                                }`}>
                                                 {msg.text.split('\n').map((line, i) => <p key={i} className="min-h-[1rem]">{line}</p>)}
                                             </div>
                                         </div>
@@ -234,8 +234,8 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                         className="w-full pl-5 pr-12 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm transition-all"
                                         disabled={loading}
                                     />
-                                    <button 
-                                        type="submit" 
+                                    <button
+                                        type="submit"
                                         disabled={loading || !input.trim()}
                                         className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     >
@@ -247,7 +247,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                             // Input for Tools
                             <div className="flex flex-col h-full">
                                 <label className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                                    <PenTool className="w-4 h-4 text-indigo-600" /> 
+                                    <PenTool className="w-4 h-4 text-indigo-600" />
                                     {tool === 'enricher' && 'Concepto a enriquecer'}
                                     {tool === 'stylizer' && 'Texto a transformar'}
                                     {tool === 'planner' && 'Tema de la clase'}
@@ -255,7 +255,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                     {tool === 'abp' && 'Tema del proyecto (Ej: Cambio Climático)'}
                                     {tool === 'inclusion' && 'Actividad a adaptar (Ej: Lectura de Quijote)'}
                                 </label>
-                                
+
                                 <textarea
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
@@ -264,7 +264,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                 />
 
                                 {/* --- Tool Specific Options --- */}
-                                
+
                                 {tool === 'stylizer' && (
                                     <div className="mb-4 animate-fade-in-fast">
                                         <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 block">Tono</label>
@@ -280,8 +280,8 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                     <div className="mb-4 space-y-4 animate-fade-in-fast bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
                                         <div>
                                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 block flex items-center gap-1"><Settings className="w-3 h-3" /> Formato</label>
-                                            <select 
-                                                value={quizFormat} 
+                                            <select
+                                                value={quizFormat}
                                                 onChange={(e) => setQuizFormat(e.target.value)}
                                                 className="w-full p-2 rounded-lg border border-gray-200 text-sm bg-white"
                                             >
@@ -295,7 +295,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 block">Dificultad</label>
                                             <div className="flex gap-2">
                                                 {['Básica', 'Intermedio', 'Avanzada'].map(level => (
-                                                    <button 
+                                                    <button
                                                         key={level}
                                                         onClick={() => setQuizDifficulty(level)}
                                                         className={`flex-1 py-1.5 text-xs rounded-md border ${quizDifficulty === level ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-600 border-gray-200'}`}
@@ -306,10 +306,10 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2 pt-2 border-t border-indigo-100">
-                                            <input 
-                                                type="checkbox" 
-                                                id="rubric" 
-                                                checked={includeRubric} 
+                                            <input
+                                                type="checkbox"
+                                                id="rubric"
+                                                checked={includeRubric}
                                                 onChange={(e) => setIncludeRubric(e.target.checked)}
                                                 className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
                                             />
@@ -335,22 +335,21 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                     {/* Right: Output / Preview Area */}
                     {tool !== 'chat' && (
                         <div className="flex-1 flex flex-col p-6 bg-white h-full overflow-hidden md:w-7/12">
-                             <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center justify-between mb-2">
                                 <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
                                     <Sparkles className="w-4 h-4 text-purple-600" /> Resultado IA
                                 </label>
                                 <div className="flex gap-2">
-                                    <button 
+                                    <button
                                         onClick={() => setIsPreviewMode(!isPreviewMode)}
                                         disabled={!output}
-                                        className={`p-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
-                                            isPreviewMode ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                        }`}
+                                        className={`p-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${isPreviewMode ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                            }`}
                                         title="Previsualizar formato"
                                     >
                                         {isPreviewMode ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => copyToClipboard(output)}
                                         disabled={!output}
                                         className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-600 transition-colors flex items-center gap-1"
@@ -360,7 +359,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div className="flex-1 bg-white border border-gray-200 rounded-xl p-6 shadow-sm overflow-y-auto custom-scrollbar relative">
                                 {output ? (
                                     isPreviewMode ? (
@@ -375,7 +374,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                         </div>
                                     ) : (
                                         // Edit/Raw Mode
-                                        <textarea 
+                                        <textarea
                                             value={output}
                                             readOnly
                                             className="w-full h-full resize-none outline-none text-gray-700 font-mono text-sm leading-relaxed"
@@ -384,7 +383,7 @@ const AIToolOverlay: React.FC<AIToolOverlayProps> = ({ tool, onClose }) => {
                                 ) : (
                                     <div className="h-full flex flex-col items-center justify-center text-gray-400 text-center p-8">
                                         <div className="bg-gray-100 p-4 rounded-full mb-4">
-                                             <Wand2 className="w-8 h-8 opacity-40" />
+                                            <Wand2 className="w-8 h-8 opacity-40" />
                                         </div>
                                         <p className="text-sm">Configura las opciones y genera tu contenido.</p>
                                     </div>

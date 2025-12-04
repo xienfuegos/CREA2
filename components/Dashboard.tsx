@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  Menu, BookOpen, Sparkles, Wand2, Palette, ClipboardList, 
-  FileQuestion, Rocket, HeartHandshake, CheckCircle 
+import {
+    Menu, BookOpen, Sparkles, Wand2, Palette, ClipboardList,
+    FileQuestion, Rocket, HeartHandshake, CheckCircle
 } from 'lucide-react';
 import { User, Tutorial, AIToolType } from '../types';
 import CalendarWidget from './CalendarWidget';
@@ -9,6 +9,7 @@ import ResourcesWidget from './ResourcesWidget';
 import TutorialsWidget from './TutorialsWidget';
 import AIToolOverlay from './AIToolOverlay';
 import TutorialOverlay from './TutorialOverlay';
+import icon01 from '../assets/icon01.png';
 
 interface DashboardProps {
     user: User;
@@ -28,7 +29,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
             >
                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/50">
                     {/* Using a Lucide Icon instead of external image for reliability */}
-                    <Sparkles className="w-6 h-6 text-yellow-300" />
+                    <img src={icon01} alt="Chatito" className="w-full h-full object-cover" />
                 </div>
                 <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-bold">
                     Chatito
@@ -101,7 +102,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                                 { id: 'abp', icon: Rocket, title: 'Proyectos ABP', desc: 'Diseña proyectos educativos completos con hitos, entregables y criterios.' },
                                 { id: 'inclusion', icon: HeartHandshake, title: 'Inclusión', desc: 'Recibe sugerencias de adaptación para estudiantes con diferentes necesidades.' },
                             ].map((item) => (
-                                <button 
+                                <button
                                     key={item.id}
                                     onClick={() => setActiveAITool(item.id as AIToolType)}
                                     className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/10 p-4 rounded-xl text-left transition-all hover:translate-y-[-2px] flex items-start gap-4 group"
@@ -126,7 +127,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                         <section className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
                             <TutorialsWidget onStartTutorial={setActiveTutorial} />
                         </section>
-                         <section className="h-[500px] animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                        <section className="h-[500px] animate-fade-in" style={{ animationDelay: '0.2s' }}>
                             <ResourcesWidget />
                         </section>
                     </div>
@@ -152,7 +153,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                                 </div>
                                 <div className="mt-4 pt-4 border-t border-indigo-500/50">
                                     <p className="text-xs text-indigo-200">
-                                        ¿Necesitas soporte técnico? <br/>
+                                        ¿Necesitas soporte técnico? <br />
                                         <a href="#" className="underline hover:text-white font-medium">Contactar a Mesa de Ayuda</a>
                                     </p>
                                 </div>
@@ -164,14 +165,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
 
             {/* Overlays */}
             {activeTutorial && (
-                <TutorialOverlay 
-                    tutorial={activeTutorial} 
-                    onClose={() => setActiveTutorial(null)} 
+                <TutorialOverlay
+                    tutorial={activeTutorial}
+                    onClose={() => setActiveTutorial(null)}
                 />
             )}
 
             {activeAITool && (
-                <AIToolOverlay 
+                <AIToolOverlay
                     tool={activeAITool}
                     onClose={() => setActiveAITool(null)}
                 />
